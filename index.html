@@ -1,149 +1,185 @@
-"use client"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Paths</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-import Image from "next/image"
-import Link from "next/link"
-import { Menu, Twitter, Linkedin, Youtube } from "lucide-react"
-import { Button } from "@/components/ui/button"
+        body {
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, sans-serif;
+            background: white;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
 
-export default function Portfolio() {
-  return (
-    <div className="min-h-screen bg-black text-white p-6">
-      <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-8">
-        {/* Left Sidebar */}
-        <div className="space-y-8">
-          {/* Profile Header */}
-          <div className="flex items-center gap-4">
-            <Image src="/placeholder.svg" alt="Profile" width={60} height={60} className="rounded-full" />
-            <div>
-              <h1 className="text-2xl font-mono">AncientXDD</h1>
-              <p className="text-gray-400">PRODUCT DESIGNER</p>
-            </div>
-          </div>
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 1rem;
+            text-align: center;
+            z-index: 10;
+        }
 
-          {/* Bio */}
-          <div className="space-y-6">
-            <p className="text-gray-300 text-lg leading-relaxed">
-              I specialize in crafting visually striking and user-friendly digital experiences. With a passion for
-              blending aesthetics and functionality, I bring ideas to life, creating innovative solutions in the dynamic
-              world of web design.
-            </p>
-            <Button variant="outline" className="rounded-full">
-              More about Me
-            </Button>
-          </div>
+        .title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: bold;
+            letter-spacing: -0.05em;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, #0f172a, rgba(15, 23, 42, 0.8));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
 
-          {/* Social Links */}
-          <div className="space-y-4">
-            <div className="flex gap-4">
-              <Button variant="ghost" size="icon" asChild>
-                <Link href="#">
-                  <Twitter className="w-5 h-5" />
-                </Link>
-              </Button>
-              <Button variant="ghost" size="icon" asChild>
-                <Link href="#">
-                  <Linkedin className="w-5 h-5" />
-                </Link>
-              </Button>
-              <Button variant="ghost" size="icon" asChild>
-                <Link href="#">
-                  <Youtube className="w-5 h-5" />
-                </Link>
-              </Button>
-            </div>
-            <div className="text-gray-400 text-sm">
-              <p>© by UIhub in Framer</p>
-              <div className="flex gap-4">
-                <Link href="#" className="hover:text-white">
-                  Licensing
-                </Link>
-                <Link href="#" className="hover:text-white">
-                  404
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
+        .button-wrapper {
+            display: inline-block;
+            position: relative;
+            padding: 1px;
+            border-radius: 1rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(255,255,255,0.1));
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
 
-        {/* Right Content */}
-        <div className="space-y-8">
-          {/* Menu Button - Only show on mobile */}
-          <div className="flex justify-end lg:hidden">
-            <Button variant="ghost" size="icon">
-              <Menu className="w-6 h-6" />
-            </Button>
-          </div>
+        .button-wrapper:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
 
-          {/* Projects Section */}
-          <section>
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-mono">My Projects</h2>
-              <Button variant="ghost" size="icon">
-                <span className="sr-only">View all projects</span>→
-              </Button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="relative aspect-square bg-gray-900 rounded-lg overflow-hidden">
-                  <Image src="/placeholder.svg" alt={`Project ${i}`} fill className="object-cover" />
-                </div>
-              ))}
-            </div>
-          </section>
+        .button {
+            display: inline-flex;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #0f172a;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
 
-          {/* Stack Section */}
-          <section className="bg-blue-600 rounded-xl p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-mono">My Stack</h2>
-              <Button variant="ghost" size="icon" className="text-white">
-                <span className="sr-only">View all tools</span>→
-              </Button>
-            </div>
-            <div className="flex gap-4">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="w-12 h-12 bg-white rounded-xl" />
-              ))}
-            </div>
-          </section>
+        .button:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+        }
 
-          {/* Contact and Clients Sections */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Contact Section */}
-            <section className="relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-900 to-gray-800 p-6">
-              <h2 className="text-2xl font-mono mb-4">Contact</h2>
-              <Button variant="ghost" size="icon" className="absolute right-4 top-4">
-                <span className="sr-only">Contact me</span>→
-              </Button>
-            </section>
+        .button span {
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
 
-            {/* Happy Clients Section */}
-            <section className="bg-gray-900 rounded-xl p-6">
-              <div className="flex items-center gap-2 mb-2">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <h3 className="text-4xl font-bold mb-4">100%</h3>
-              <p className="text-gray-400">Happy Clients</p>
-              <div className="flex -space-x-2 mt-4">
-                {[1, 2, 3].map((i) => (
-                  <Image
-                    key={i}
-                    src="/placeholder.svg"
-                    alt={`Client ${i}`}
-                    width={40}
-                    height={40}
-                    className="rounded-full border-2 border-gray-900"
-                  />
-                ))}
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
+        .button:hover span {
+            opacity: 1;
+        }
+
+        .button .arrow {
+            margin-left: 0.75rem;
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+
+        .button:hover .arrow {
+            opacity: 1;
+            transform: translateX(6px);
+        }
+
+        .background {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .background svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .background path {
+            stroke: currentColor;
+            stroke-opacity: 0.1;
+            animation: pathAnimation 30s linear infinite;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pathAnimation {
+            0% {
+                stroke-dashoffset: 1000;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #0a0a0a;
+                color: white;
+            }
+
+            .title {
+                background: linear-gradient(to right, white, rgba(255, 255, 255, 0.8));
+                -webkit-background-clip: text;
+                background-clip: text;
+            }
+
+            .button {
+                background: rgba(0, 0, 0, 0.95);
+                color: white;
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .button:hover {
+                background: rgba(0, 0, 0, 1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <svg viewBox="0 0 696 316" fill="none">
+            <title>Background Paths</title>
+            <path d="M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875" stroke="currentColor" stroke-width="0.5"></path>
+            <path d="M-375 -183C-375 -183 -307 222 157 349C621 476 689 881 689 881" stroke="currentColor" stroke-width="0.53"></path>
+            <path d="M-370 -177C-370 -177 -302 228 162 355C626 482 694 887 694 887" stroke="currentColor" stroke-width="0.56"></path>
+            <!-- Add more paths as needed -->
+        </svg>
     </div>
-  )
-}
 
+    <div class="container">
+        <h1 class="title">Background Paths</h1>
+        <div class="button-wrapper">
+            <a href="#" class="button">
+                <span>Discover Excellence</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
